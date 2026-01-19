@@ -8,21 +8,98 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
 <style>
-body{font-family:Arial;background:#f2f2f2;padding:15px}
-.form{background:#fff;max-width:900px;margin:auto;padding:20px;color:#000}
-.header{text-align:center;border-bottom:2px solid #000;padding-bottom:10px}
+body{
+  font-family:Arial, sans-serif;
+  background:#f2f2f2;
+  padding:15px;
+}
+.form{
+  background:#fff;
+  max-width:900px;
+  margin:auto;
+  padding:20px;
+  color:#000;
+}
+.header{
+  text-align:center;
+  border-bottom:2px solid #000;
+  padding-bottom:10px;
+}
+.header img{
+  height:70px;
+  margin-bottom:8px;
+}
 .header h1{margin:0;font-size:20px}
-.header h2{margin:4px 0 0;font-size:14px}
-.info{display:flex;justify-content:space-between;flex-wrap:wrap;font-size:13px;margin:10px 0}
-label{font-weight:bold;margin-top:10px;display:block}
-input,textarea,select{width:100%;padding:8px;margin-top:4px}
-.section{border:1px solid #000;padding:10px;margin-top:15px}
-canvas{border:1px solid #000;width:100%;max-width:350px;height:140px;touch-action:none}
-table{width:100%;border-collapse:collapse;margin-top:10px;font-size:13px}
-th,td{border:1px solid #000;padding:6px;text-align:center}
-button{margin-top:12px;width:100%;padding:14px;font-size:16px}
-.output{border:1px solid #000;padding:10px;margin-top:10px}
-.uyari{margin-top:15px;font-size:12px;font-weight:bold}
+.header h2{margin-top:4px;font-size:14px}
+
+.info{
+  display:flex;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  font-size:13px;
+  margin:10px 0;
+}
+
+.section{
+  border:1px solid #000;
+  padding:10px;
+  margin-top:15px;
+}
+
+label{
+  display:block;
+  font-weight:bold;
+  margin-top:10px;
+}
+
+input, textarea, select{
+  width:100%;
+  padding:8px;
+  margin-top:4px;
+}
+
+.output{
+  border:1px solid #000;
+  padding:10px;
+  margin-top:10px;
+  font-size:13px;
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+  margin-top:10px;
+  font-size:13px;
+}
+th, td{
+  border:1px solid #000;
+  padding:6px;
+  text-align:center;
+}
+
+canvas{
+  border:1px solid #000;
+  width:100%;
+  max-width:350px;
+  height:140px;
+  touch-action:none;
+}
+
+button{
+  margin-top:12px;
+  width:100%;
+  padding:14px;
+  font-size:16px;
+}
+
+.pdf-uyari{
+  page-break-before:always;
+  page-break-inside:avoid;
+  margin-top:20px;
+  font-size:12px;
+  font-weight:bold;
+  line-height:1.6;
+}
 </style>
 </head>
 
@@ -31,6 +108,7 @@ button{margin-top:12px;width:100%;padding:14px;font-size:16px}
 <div id="form" class="form">
 
 <div class="header">
+  <img src="assets/logo.png" alt="Logo">
   <h1>GEZİCİ BÖLGE MERKEZ SERVİS</h1>
   <h2>TEKNİK SERVİS FORMU</h2>
 </div>
@@ -64,10 +142,10 @@ button{margin-top:12px;width:100%;padding:14px;font-size:16px}
 <div class="section">
 <label>Yapılan İşlem</label>
 <select id="islem">
-<option>Yerinde Bakım Yapıldı</option>
-<option>Atölyeye Alındı</option>
-<option>Parça Değişimi Yapıldı</option>
-<option>Bakım Yapıldı</option>
+  <option>Yerinde Bakım Yapıldı</option>
+  <option>Atölyeye Alındı</option>
+  <option>Parça Değişimi Yapıldı</option>
+  <option>Bakım Yapıldı</option>
 </select>
 
 <label>Yapılan İşlemler</label>
@@ -87,10 +165,10 @@ placeholder="Müşteri adresine geçiş sağlandı..."></textarea>
 
 <label>Ödeme Şekli</label>
 <select id="odemeSekli">
-<option>Nakit</option>
-<option>EFT</option>
-<option>Havale</option>
-<option>Kredi Kartı</option>
+  <option>Nakit</option>
+  <option>EFT</option>
+  <option>Havale</option>
+  <option>Kredi Kartı</option>
 </select>
 
 <label>Tutar (₺)</label>
@@ -101,11 +179,11 @@ placeholder="Müşteri adresine geçiş sağlandı..."></textarea>
 <table>
 <thead>
 <tr>
-<th>Tarih</th>
-<th>Tahsil Eden</th>
-<th>Ödeme Şekli</th>
-<th>Durum</th>
-<th>Tutar</th>
+  <th>Tarih</th>
+  <th>Tahsil Eden</th>
+  <th>Ödeme Şekli</th>
+  <th>Durum</th>
+  <th>Tutar</th>
 </tr>
 </thead>
 <tbody id="paraTablo"></tbody>
@@ -118,11 +196,17 @@ placeholder="Müşteri adresine geçiş sağlandı..."></textarea>
 <button type="button" onclick="imzaTemizle()">İmzayı Temizle</button>
 </div>
 
-<div class="uyari">
-YAPILAN İŞLEMLER BİR (1) YIL GARANTİLİDİR.<br><br>
-FİRMAMIZ BİR (1) YIL İÇİNDE ALINMAYAN CİHAZLARDAN SORUMLU DEĞİLDİR.<br><br>
-ÖN ÖDEME İLE İŞLEME ALINAN CİHAZLARIN ONARIMDAN VAZGEÇİLMESİ DURUMUNDA ALINAN ÜCRET İADE EDİLMEZ.<br><br>
-ATÖLYEYE ALINMIŞ CİHAZIN ONARIMININ İPTAL EDİLMESİ DURUMUNDA SERVİS ÜCRETİ VE NAKLİYE BEDELİ TÜKETİCİDEN TALEP EDİLECEKTİR.
+<div class="pdf-uyari">
+•YAPILAN TÜM SERVİS VE ONARIM İŞLEMLERİ, TESLİM TARİHİNDEN İTİBAREN 
+BİR (1) YIL SÜRE İLE GARANTİ KAPSAMINDADIR.<br><br>
+•FİRMAMIZ, SERVİSE TESLİM EDİLEN VE BİR (1) YIL İÇERİSİNDE 
+TESLİM ALINMAYAN CİHAZLARDAN HUKUKİ VE MADDİ OLARAK 
+SORUMLULUK KABUL ETMEMEKTEDİR.<br><br>
+•ÖN ÖDEME İLE İŞLEME ALINAN CİHAZLARDA, ONARIM İŞLEMİNDEN 
+VAZGEÇİLMESİ HALİNDE TAHSİL EDİLEN BEDELİN İADESİ YAPILMAZ.<br><br>
+•ATÖLYEYE ALINAN CİHAZLARDA, ONARIM SÜRECİNİN MÜŞTERİ 
+TARAFINDAN İPTAL EDİLMESİ DURUMUNDA SERVİS ÜCRETİ VE 
+NAKLİYE BEDELİ AYRICA TALEP EDİLİR.
 </div>
 
 </div>
@@ -141,27 +225,26 @@ function islemOlustur(){
   const detay=document.getElementById("islemDetay").value;
   const fiyat=document.getElementById("verilenFiyat").value;
 
-  document.getElementById("islemCikti").innerHTML=`
-<strong>${islem}</strong><br><br>
-<strong>Yapılan İşlemler:</strong><br>
-${detay}<br><br>
-<strong>Müşteriye Verilen Fiyat:</strong>
-${Number(fiyat).toLocaleString("tr-TR")} TL
-`;
+  document.getElementById("islemCikti").innerHTML=
+    "<strong>"+islem+"</strong><br><br>"+
+    "<strong>Yapılan İşlemler:</strong><br>"+detay+"<br><br>"+
+    "<strong>Müşteriye Verilen Fiyat:</strong> "+
+    Number(fiyat).toLocaleString("tr-TR")+" TL";
+
   document.getElementById("islemCikti").style.display="block";
 }
 
 function paraEkle(){
   const tutar=document.getElementById("tutar").value;
   if(!tutar) return;
-  document.getElementById("paraTablo").innerHTML+=`
-<tr>
-<td>${tarih}</td>
-<td>${teknisyen}</td>
-<td>${document.getElementById("odemeSekli").value}</td>
-<td>Tamamlandı</td>
-<td>${Number(tutar).toLocaleString("tr-TR")} TL</td>
-</tr>`;
+  document.getElementById("paraTablo").innerHTML+=
+    "<tr>"+
+    "<td>"+tarih+"</td>"+
+    "<td>"+teknisyen+"</td>"+
+    "<td>"+document.getElementById("odemeSekli").value+"</td>"+
+    "<td>Tamamlandı</td>"+
+    "<td>"+Number(tutar).toLocaleString("tr-TR")+" TL</td>"+
+    "</tr>";
   document.getElementById("tutar").value="";
 }
 
@@ -170,13 +253,14 @@ function pdfOlustur(){
   html2pdf().set({
     margin:10,
     filename:ad+".pdf",
-    html2canvas:{scale:2},
+    html2canvas:{scale:2,useCORS:true,scrollY:0},
     jsPDF:{unit:"mm",format:"a4",orientation:"portrait"}
   }).from(document.getElementById("form")).save();
 }
 
 /* İMZA */
-const c=document.getElementById("imza"),ctx=c.getContext("2d");
+const c=document.getElementById("imza");
+const ctx=c.getContext("2d");
 let d=false;
 c.addEventListener("mousedown",e=>{d=true;ctx.moveTo(e.offsetX,e.offsetY)});
 c.addEventListener("mousemove",e=>{if(d){ctx.lineTo(e.offsetX,e.offsetY);ctx.stroke()}});
