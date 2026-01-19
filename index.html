@@ -12,15 +12,17 @@ body{font-family:Arial;background:#f2f2f2;padding:15px}
 .form{background:#fff;max-width:900px;margin:auto;padding:20px;color:#000}
 .header{text-align:center;border-bottom:2px solid #000;padding-bottom:10px}
 .header h1{margin:0;font-size:20px}
-.header h2{margin:5px 0 0;font-size:14px}
+.header h2{margin:4px 0 0;font-size:14px}
 .info{display:flex;justify-content:space-between;flex-wrap:wrap;font-size:13px;margin:10px 0}
 label{font-weight:bold;margin-top:10px;display:block}
 input,textarea,select{width:100%;padding:8px;margin-top:4px}
-.accordion{margin-top:12px;background:#eee;padding:10px;font-weight:bold;cursor:pointer;border:1px solid #000}
-.panel{display:none;border:1px solid #000;padding:10px}
-.output{border:1px solid #000;padding:10px;margin-top:10px;font-size:14px}
-canvas{border:1px solid #000;width:100%;max-width:300px;height:120px;touch-action:none}
-button{margin-top:15px;width:100%;padding:14px;font-size:16px}
+.section{border:1px solid #000;padding:10px;margin-top:15px}
+canvas{border:1px solid #000;width:100%;max-width:350px;height:140px;touch-action:none}
+table{width:100%;border-collapse:collapse;margin-top:10px;font-size:13px}
+th,td{border:1px solid #000;padding:6px;text-align:center}
+button{margin-top:12px;width:100%;padding:14px;font-size:16px}
+.output{border:1px solid #000;padding:10px;margin-top:10px}
+.uyari{margin-top:15px;font-size:12px;font-weight:bold}
 </style>
 </head>
 
@@ -39,31 +41,92 @@ button{margin-top:15px;width:100%;padding:14px;font-size:16px}
   <div>Teknisyen Kodu: <strong id="teknisyen"></strong></div>
 </div>
 
+<div class="section">
 <label>Müşteri Ad Soyad</label>
 <input id="musteri">
 
-<label>Yapılan İşlem</label>
-<div class="accordion">Seçmek için tıklayın</div>
-<div class="panel">
-  <label><input type="radio" name="islem" value="Yerinde Bakım Yapıldı"> Yerinde Bakım Yapıldı</label>
-  <label><input type="radio" name="islem" value="Atölyeye Alındı"> Atölyeye Alındı</label>
-  <label><input type="radio" name="islem" value="Parça Değişimi Yapıldı"> Parça Değişimi Yapıldı</label>
+<label>Telefon</label>
+<input>
 
-  <label>Yapılan İşlemler:</label>
-  <textarea id="islemDetay" placeholder="Detaylı açıklama..."></textarea>
+<label>Adres</label>
+<textarea></textarea>
 
-  <label>Müşteriye Verilen Fiyat (₺)</label>
-  <input id="verilenFiyat" placeholder="Örn: 8500">
+<label>Cihaz Marka / Model</label>
+<input>
+
+<label>Seri No</label>
+<input>
+
+<label>Arıza Şikayeti</label>
+<textarea></textarea>
 </div>
+
+<div class="section">
+<label>Yapılan İşlem</label>
+<select id="islem">
+<option>Yerinde Bakım Yapıldı</option>
+<option>Atölyeye Alındı</option>
+<option>Parça Değişimi Yapıldı</option>
+<option>Bakım Yapıldı</option>
+</select>
+
+<label>Yapılan İşlemler</label>
+<textarea id="islemDetay"
+placeholder="Müşteri adresine geçiş sağlandı..."></textarea>
+
+<label>Müşteriye Verilen Fiyat (₺)</label>
+<input id="verilenFiyat" placeholder="8500">
+
+<button type="button" onclick="islemOlustur()">İşlem Metni Oluştur</button>
 
 <div id="islemCikti" class="output" style="display:none"></div>
+</div>
 
+<div class="section">
+<h3>- PARA HAREKETLERİ -</h3>
+
+<label>Ödeme Şekli</label>
+<select id="odemeSekli">
+<option>Nakit</option>
+<option>EFT</option>
+<option>Havale</option>
+<option>Kredi Kartı</option>
+</select>
+
+<label>Tutar (₺)</label>
+<input id="tutar">
+
+<button type="button" onclick="paraEkle()">Ödeme Ekle</button>
+
+<table>
+<thead>
+<tr>
+<th>Tarih</th>
+<th>Tahsil Eden</th>
+<th>Ödeme Şekli</th>
+<th>Durum</th>
+<th>Tutar</th>
+</tr>
+</thead>
+<tbody id="paraTablo"></tbody>
+</table>
+</div>
+
+<div class="section">
 <label>Müşteri İmzası</label>
 <canvas id="imza"></canvas>
+<button type="button" onclick="imzaTemizle()">İmzayı Temizle</button>
+</div>
+
+<div class="uyari">
+YAPILAN İŞLEMLER BİR (1) YIL GARANTİLİDİR.<br><br>
+FİRMAMIZ BİR (1) YIL İÇİNDE ALINMAYAN CİHAZLARDAN SORUMLU DEĞİLDİR.<br><br>
+ÖN ÖDEME İLE İŞLEME ALINAN CİHAZLARIN ONARIMDAN VAZGEÇİLMESİ DURUMUNDA ALINAN ÜCRET İADE EDİLMEZ.<br><br>
+ATÖLYEYE ALINMIŞ CİHAZIN ONARIMININ İPTAL EDİLMESİ DURUMUNDA SERVİS ÜCRETİ VE NAKLİYE BEDELİ TÜKETİCİDEN TALEP EDİLECEKTİR.
+</div>
 
 </div>
 
-<button onclick="olustur()">Formu Oluştur</button>
 <button onclick="pdfOlustur()">PDF OLUŞTUR</button>
 
 <script>
@@ -73,43 +136,52 @@ document.getElementById("servisno").innerText="SRV-"+Date.now();
 document.getElementById("tarih").innerText=tarih;
 document.getElementById("teknisyen").innerText=teknisyen;
 
-document.querySelector(".accordion").onclick=()=>{
-  const p=document.querySelector(".panel");
-  p.style.display=p.style.display==="block"?"none":"block";
-};
-
-function olustur(){
-  const secili=document.querySelector("input[name='islem']:checked");
-  if(!secili) return alert("İşlem seçiniz");
-
+function islemOlustur(){
+  const islem=document.getElementById("islem").value;
   const detay=document.getElementById("islemDetay").value;
   const fiyat=document.getElementById("verilenFiyat").value;
 
   document.getElementById("islemCikti").innerHTML=`
-    <strong>${secili.value}</strong><br><br>
-    <strong>Yapılan İşlemler:</strong><br>
-    ${detay}<br><br>
-    <strong>Müşteriye Verilen Fiyat:</strong> ${Number(fiyat).toLocaleString("tr-TR")} TL
-  `;
+<strong>${islem}</strong><br><br>
+<strong>Yapılan İşlemler:</strong><br>
+${detay}<br><br>
+<strong>Müşteriye Verilen Fiyat:</strong>
+${Number(fiyat).toLocaleString("tr-TR")} TL
+`;
   document.getElementById("islemCikti").style.display="block";
 }
 
-function pdfOlustur(){
-  const el=document.getElementById("form");
-  html2pdf().set({
-    margin:10,
-    filename:(document.getElementById("musteri").value||"servis-formu")+".pdf",
-    html2canvas:{scale:2,useCORS:true},
-    jsPDF:{unit:"mm",format:"a4",orientation:"portrait"}
-  }).from(el).save();
+function paraEkle(){
+  const tutar=document.getElementById("tutar").value;
+  if(!tutar) return;
+  document.getElementById("paraTablo").innerHTML+=`
+<tr>
+<td>${tarih}</td>
+<td>${teknisyen}</td>
+<td>${document.getElementById("odemeSekli").value}</td>
+<td>Tamamlandı</td>
+<td>${Number(tutar).toLocaleString("tr-TR")} TL</td>
+</tr>`;
+  document.getElementById("tutar").value="";
 }
 
-/* İmza */
+function pdfOlustur(){
+  const ad=document.getElementById("musteri").value||"servis-formu";
+  html2pdf().set({
+    margin:10,
+    filename:ad+".pdf",
+    html2canvas:{scale:2},
+    jsPDF:{unit:"mm",format:"a4",orientation:"portrait"}
+  }).from(document.getElementById("form")).save();
+}
+
+/* İMZA */
 const c=document.getElementById("imza"),ctx=c.getContext("2d");
 let d=false;
 c.addEventListener("mousedown",e=>{d=true;ctx.moveTo(e.offsetX,e.offsetY)});
 c.addEventListener("mousemove",e=>{if(d){ctx.lineTo(e.offsetX,e.offsetY);ctx.stroke()}});
 c.addEventListener("mouseup",()=>d=false);
+function imzaTemizle(){ctx.clearRect(0,0,c.width,c.height);}
 </script>
 
 </body>
