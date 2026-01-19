@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="tr">
 <head>
@@ -6,121 +5,155 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Teknik Servis Formu</title>
 
-<!-- PWA -->
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#000000">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="Servis Formu">
 <link rel="apple-touch-icon" href="assets/logo.png">
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
 <style>
 body{font-family:Arial;background:#f2f2f2;padding:15px}
-.form{background:#fff;max-width:800px;margin:auto;padding:20px}
-.header{display:flex;align-items:center;gap:15px;border-bottom:2px solid #000;padding-bottom:10px}
+.form{background:#fff;max-width:900px;margin:auto;padding:20px}
+.header{display:flex;gap:15px;border-bottom:2px solid #000;padding-bottom:10px}
 .logo{height:70px}
-h1{margin:0;font-size:18px}
-h2{margin:0;font-size:14px}
 .info{display:flex;justify-content:space-between;flex-wrap:wrap;font-size:13px;margin:10px 0}
-label{margin-top:10px;display:block;font-weight:bold}
-input,textarea{width:100%;padding:8px;margin-top:4px}
+label{font-weight:bold;margin-top:10px;display:block}
+input,textarea,select{width:100%;padding:8px;margin-top:4px}
 .accordion{margin-top:10px;cursor:pointer;background:#eee;padding:8px;border:1px solid #000}
-.panel{display:none}
-.islem-listesi{border:1px solid #000;padding:8px;font-size:13px}
-.onay-metni{margin-top:12px;font-size:12px;border:1px solid #000;padding:8px}
-canvas{border:1px solid #000;margin-top:5px;width:100%;max-width:300px;height:120px;touch-action:none}
-.imza-temizle{margin-top:6px;padding:6px 12px}
-.bilgilendirme{font-size:11px;border-top:1px solid #000;margin-top:15px;padding-top:8px}
-button{margin-top:15px;width:100%;padding:14px;font-size:16px}
+.panel{display:none;border:1px solid #000;padding:8px}
+canvas{border:1px solid #000;width:100%;max-width:300px;height:120px;touch-action:none}
+table{width:100%;border-collapse:collapse;margin-top:10px;font-size:13px}
+th,td{border:1px solid #000;padding:6px;text-align:center}
+button{margin-top:12px;width:100%;padding:14px;font-size:16px}
+.uyari{margin-top:15px;font-size:12px;font-weight:bold}
 </style>
 </head>
 
 <body>
 
 <div id="form" class="form">
-  <div class="header">
-    <img src="assets/logo.png" class="logo">
-    <div>
-      <h1>GEZİCİ BÖLGE MERKEZ SERVİSİ</h1>
-      <h2>TEKNİK SERVİS FORMU</h2>
-    </div>
-  </div>
 
-  <div class="info">
-    <div>Servis No: <span id="servisno"></span></div>
-    <div>Tarih: <span id="tarih"></span></div>
-    <div>Teknisyen Kodu: <strong id="teknisyen"></strong></div>
-  </div>
-
-  <label>Müşteri Ad Soyad</label><input>
-  <label>Telefon</label><input>
-  <label>Adres</label><textarea></textarea>
-  <label>Cihaz / Model</label><input>
-
-  <div class="accordion">Yapılan İşlem</div>
-  <div class="panel islem-listesi">
-    <label><input type="checkbox"> Yerinde Servis</label>
-    <label><input type="checkbox"> Atölyeye Alındı</label>
-    <label><input type="checkbox"> Nakliye Gerekti</label>
-    <label><input type="checkbox"> Garantili Çıktı</label>
-    <label><input type="checkbox"> Müşteri İptal</label>
-  </div>
-
-  <label>Toplam Ücret (₺)</label><input>
-
-  <div class="onay-metni">
-    Yapılan işlemler tarafıma açıklanmış olup kabul ediyorum.
-  </div>
-
-  <label>Müşteri İmzası</label>
-  <canvas id="imza" width="300" height="120"></canvas>
-  <button type="button" class="imza-temizle" onclick="imzaTemizle()">İmzayı Temizle</button>
-
-  <div class="bilgilendirme">
-    <ol>
-      <li>Firmamız özel servistir.</li>
-      <li>Garanti dışı işlemler 1 yıl garantilidir.</li>
-      <li>Bu belge elektronik olarak düzenlenmiştir.</li>
-    </ol>
+<div class="header">
+  <img src="assets/logo.png" class="logo">
+  <div>
+    <h2>TEKNİK SERVİS FORMU</h2>
   </div>
 </div>
 
-<button onclick="pdfIOS()">PDF OLUŞTUR & WhatsApp</button>
+<div class="info">
+  <div>Servis No: <span id="servisno"></span></div>
+  <div>Tarih: <span id="tarih"></span></div>
+  <div>Teknisyen Kodu: <strong id="teknisyen"></strong></div>
+</div>
+
+<label>Müşteri Ad Soyad</label>
+<input id="musteri">
+
+<label>Telefon</label>
+<input>
+
+<label>Adres</label>
+<textarea></textarea>
+
+<label>Cihaz / Model</label>
+<input>
+
+<div class="accordion">Yapılan İşlem</div>
+<div class="panel">
+  <label><input type="checkbox" class="islem"> Yerinde Servis</label>
+  <label><input type="checkbox" class="islem"> Atölyeye Alındı</label>
+  <label><input type="checkbox" class="islem"> Nakliye Gerekti</label>
+
+  <label>Yapılan İşlemler:</label>
+  <textarea placeholder="Detaylı açıklama..."></textarea>
+</div>
+
+<h3>- PARA HAREKETLERİ -</h3>
+
+<label>Ödeme Şekli</label>
+<select id="odemeSekli">
+  <option>Nakit</option>
+  <option>EFT</option>
+  <option>Havale</option>
+  <option>Kredi Kartı</option>
+</select>
+
+<label>Tutar (₺)</label>
+<input id="tutar">
+
+<button type="button" onclick="paraEkle()">Para Hareketi Ekle</button>
+
+<table>
+<thead>
+<tr>
+<th>Tarih</th>
+<th>Tahsil Eden</th>
+<th>Ödeme Şekli</th>
+<th>Durum</th>
+<th>Tutar</th>
+</tr>
+</thead>
+<tbody id="paraTablo"></tbody>
+</table>
+
+<label>Müşteri İmzası</label>
+<canvas id="imza"></canvas>
+
+<div class="uyari">
+YAPILAN İŞLEMLER BİR (1) YIL GARANTİLİDİR.<br><br>
+FİRMAMIZ BİR (1) YIL İÇİNDE ALINMAYAN CİHAZLARDAN SORUMLU DEĞİLDİR.<br><br>
+ÖN ÖDEME İLE İŞLEME ALINAN CİHAZLARIN ONARIMDAN VAZGEÇİLMESİ DURUMUNDA ALINAN ÜCRET İADE EDİLMEZ.<br><br>
+ATÖLYEYE ALINMIŞ CİHAZIN ONARIMININ İPTAL EDİLMESİ DURUMUNDA SERVİS ÜCRETİ VE NAKLİYE BEDELİ TÜKETİCİDEN TALEP EDİLECEKTİR.
+</div>
+
+</div>
+
+<button onclick="pdfOlustur()">PDF OLUŞTUR</button>
+<button onclick="whatsapp()">WhatsApp Gönder</button>
 
 <script>
+const tarih=new Date().toLocaleDateString("tr-TR");
+const teknisyen=Math.floor(10000000+Math.random()*90000000);
 document.getElementById("servisno").innerText="SRV-"+Date.now();
-document.getElementById("tarih").innerText=new Date().toLocaleString("tr-TR");
-document.getElementById("teknisyen").innerText=Math.floor(10000000+Math.random()*90000000);
+document.getElementById("tarih").innerText=tarih;
+document.getElementById("teknisyen").innerText=teknisyen;
 
 document.querySelector(".accordion").onclick=function(){
   this.nextElementSibling.style.display=
   this.nextElementSibling.style.display==="block"?"none":"block";
 };
 
-const c=document.getElementById("imza"),x=c.getContext("2d");
-let d=false;
-function pos(e){const r=c.getBoundingClientRect();
-return e.touches?{x:e.touches[0].clientX-r.left,y:e.touches[0].clientY-r.top}:{x:e.offsetX,y:e.offsetY}}
-c.addEventListener("mousedown",e=>{d=true;let p=pos(e);x.beginPath();x.moveTo(p.x,p.y)});
-c.addEventListener("mousemove",e=>{if(!d)return;let p=pos(e);x.lineTo(p.x,p.y);x.stroke()});
-c.addEventListener("mouseup",()=>d=false);
-c.addEventListener("touchstart",e=>{d=true;let p=pos(e);x.beginPath();x.moveTo(p.x,p.y)});
-c.addEventListener("touchmove",e=>{if(!d)return;e.preventDefault();let p=pos(e);x.lineTo(p.x,p.y);x.stroke()});
-c.addEventListener("touchend",()=>d=false);
-
-function imzaTemizle(){x.clearRect(0,0,c.width,c.height)}
-
-function pdfIOS(){
-  html2pdf().from(document.getElementById("form")).outputPdf("blob").then(b=>{
-    let a=document.createElement("a");
-    a.href=URL.createObjectURL(b);
-    a.download="teknik-servis-formu.pdf";
-    a.click();
-    window.location.href="https://wa.me/?text="+encodeURIComponent("Teknik Servis Formu Hazır");
-  });
+function paraEkle(){
+  const tutar=document.getElementById("tutar").value;
+  if(!tutar) return;
+  document.getElementById("paraTablo").innerHTML+=`
+  <tr>
+    <td>${tarih}</td>
+    <td>${teknisyen}</td>
+    <td>${document.getElementById("odemeSekli").value}</td>
+    <td>Tamamlandı</td>
+    <td>${Number(tutar).toLocaleString("tr-TR")} ₺</td>
+  </tr>`;
+  document.getElementById("tutar").value="";
 }
+
+function pdfOlustur(){
+  const ad=document.getElementById("musteri").value||"servis-formu";
+  html2pdf().from(document.getElementById("form"))
+  .set({filename:ad+".pdf"}).save();
+}
+
+function whatsapp(){
+  window.location.href="https://wa.me/?text="+encodeURIComponent("Teknik servis formunuz hazırdır.");
+}
+
+/* İmza */
+const c=document.getElementById("imza"),ctx=c.getContext("2d");
+let d=false;
+c.addEventListener("mousedown",e=>{d=true;ctx.moveTo(e.offsetX,e.offsetY)});
+c.addEventListener("mousemove",e=>{if(d){ctx.lineTo(e.offsetX,e.offsetY);ctx.stroke()}});
+c.addEventListener("mouseup",()=>d=false);
 
 if("serviceWorker"in navigator){navigator.serviceWorker.register("sw.js")}
 </script>
