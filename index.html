@@ -18,7 +18,6 @@ body{
   max-width:850px;
   margin:auto;
   padding:15px;
-  color:#000;
 }
 .header{
   text-align:center;
@@ -26,57 +25,44 @@ body{
   padding-bottom:8px;
 }
 .header img{
-  height:60px;
-  margin-bottom:6px;
+  height:55px;
+  margin-bottom:5px;
 }
 .header h1{margin:0;font-size:18px}
-.header h2{margin-top:4px;font-size:13px}
+.header h2{margin:3px 0 0;font-size:13px}
 
 .info{
   display:flex;
   justify-content:space-between;
   flex-wrap:wrap;
   font-size:12px;
-  margin:8px 0;
+  margin:6px 0;
 }
 
 .section{
   border:1px solid #000;
   padding:8px;
-  margin-top:10px;
+  margin-top:8px;
 }
 
 label{
-  display:block;
   font-weight:bold;
-  margin-top:6px;
   font-size:12px;
+  margin-top:6px;
+  display:block;
 }
-
 input, textarea, select{
   width:100%;
   padding:6px;
+  font-size:12px;
   margin-top:3px;
-  font-size:12px;
 }
 
-.output{
-  border:1px solid #000;
-  padding:8px;
-  margin-top:8px;
-  font-size:12px;
-}
-
-table{
+button{
   width:100%;
-  border-collapse:collapse;
   margin-top:8px;
-  font-size:12px;
-}
-th, td{
-  border:1px solid #000;
-  padding:5px;
-  text-align:center;
+  padding:10px;
+  font-size:14px;
 }
 
 canvas{
@@ -87,33 +73,38 @@ canvas{
   touch-action:none;
 }
 
-button{
-  margin-top:8px;
-  width:100%;
-  padding:10px;
-  font-size:14px;
+/* PDF ŞABLONU */
+#pdfForm{
+  display:none;
+  font-size:12px;
 }
-
-.hide-pdf{
-  display:none !important;
-}
-
+.pdf-row{margin-bottom:5px}
+.pdf-label{font-weight:bold}
 .pdf-uyari{
-  page-break-inside:avoid;
-  margin-top:10px;
+  font-size:10px;
+  line-height:1.3;
+  margin-top:8px;
+}
+table{
+  width:100%;
+  border-collapse:collapse;
   font-size:11px;
-  font-weight:bold;
-  line-height:1.5;
+}
+th,td{
+  border:1px solid #000;
+  padding:4px;
+  text-align:center;
 }
 </style>
 </head>
 
 <body>
 
+<!-- ================== FORM (EKRAN) ================== -->
 <div id="form" class="form">
 
 <div class="header">
-  <img src="assets/logo.png" alt="Logo">
+  <img src="assets/logo.png">
   <h1>GEZİCİ BÖLGE MERKEZ SERVİS</h1>
   <h2>TEKNİK SERVİS FORMU</h2>
 </div>
@@ -128,20 +119,11 @@ button{
 <label>Müşteri Ad Soyad</label>
 <input id="musteri">
 
-<label>Telefon</label>
-<input>
-
 <label>Adres</label>
-<textarea></textarea>
+<textarea id="adres"></textarea>
 
-<label>Cihaz Marka / Model</label>
-<input>
-
-<label>Seri No</label>
-<input>
-
-<label>Arıza Şikayeti</label>
-<textarea></textarea>
+<label>Cihaz / Model</label>
+<input id="cihaz">
 </div>
 
 <div class="section">
@@ -150,167 +132,138 @@ button{
   <option>Yerinde Bakım Yapıldı</option>
   <option>Atölyeye Alındı</option>
   <option>Parça Değişimi Yapıldı</option>
-  <option>Bakım Yapıldı</option>
 </select>
 
 <label>Yapılan İşlemler</label>
-<textarea id="islemDetay"
-placeholder="Müşteri adresine geçiş sağlandı..."></textarea>
+<textarea id="islemDetay"></textarea>
 
 <label>Müşteriye Verilen Fiyat (₺)</label>
-<input id="verilenFiyat" placeholder="8500">
+<input id="fiyat">
 
-<button type="button" onclick="islemOlustur()">İşlem Metni Oluştur</button>
+<button type="button" onclick="olusturIslem()">İşlem Metni Oluştur</button>
 
-<div id="islemCikti" class="output" style="display:none"></div>
+<div id="islemCikti" style="margin-top:8px;font-size:12px"></div>
 </div>
 
 <div class="section">
-<h3>- PARA HAREKETLERİ -</h3>
-
 <label>Ödeme Şekli</label>
-<select id="odemeSekli">
+<select id="odeme">
   <option>Nakit</option>
   <option>EFT</option>
-  <option>Havale</option>
   <option>Kredi Kartı</option>
 </select>
 
-<label>Tutar (₺)</label>
+<label>Tutar</label>
 <input id="tutar">
 
-<button type="button" onclick="paraEkle()">Ödeme Ekle</button>
+<button type="button" onclick="odemeEkle()">Ödeme Ekle</button>
 
 <table>
 <thead>
-<tr>
-  <th>Tarih</th>
-  <th>Tahsil Eden</th>
-  <th>Ödeme Şekli</th>
-  <th>Durum</th>
-  <th>Tutar</th>
-</tr>
+<tr><th>Tarih</th><th>Ödeme</th><th>Tutar</th></tr>
 </thead>
-<tbody id="paraTablo"></tbody>
+<tbody id="odemeTablo"></tbody>
 </table>
 </div>
 
 <div class="section">
 <label>Müşteri İmzası</label>
 <canvas id="imza"></canvas>
-<button type="button" onclick="imzaTemizle()">İmzayı Temizle</button>
+<button type="button" onclick="temizleImza()">İmzayı Temizle</button>
 </div>
+
+</div>
+
+<button onclick="pdfOlustur()">PDF YAZDIR</button>
+
+<!-- ================== PDF ŞABLONU ================== -->
+<div id="pdfForm">
+<h3 style="text-align:center;margin:0">
+GEZİCİ BÖLGE MERKEZ SERVİS<br>
+TEKNİK SERVİS FORMU
+</h3>
+<hr>
+
+<div class="pdf-row"><span class="pdf-label">Müşteri:</span> <span id="p_musteri"></span></div>
+<div class="pdf-row"><span class="pdf-label">Adres:</span> <span id="p_adres"></span></div>
+<div class="pdf-row"><span class="pdf-label">Cihaz:</span> <span id="p_cihaz"></span></div>
+
+<br>
+
+<div class="pdf-label">Yapılan İşlem</div>
+<div id="p_islem"></div>
+
+<br>
+
+<table>
+<thead>
+<tr><th>Tarih</th><th>Ödeme</th><th>Tutar</th></tr>
+</thead>
+<tbody id="p_odeme"></tbody>
+</table>
+
+<br>
+
+<img id="p_imza" style="width:200px;border:1px solid #000">
 
 <div class="pdf-uyari">
-YAPILAN TÜM SERVİS VE ONARIM İŞLEMLERİ, TESLİM TARİHİNDEN İTİBAREN 
-BİR (1) YIL SÜRE İLE GARANTİ KAPSAMINDADIR.<br><br>
-
-FİRMAMIZ, SERVİSE TESLİM EDİLEN VE BİR (1) YIL İÇERİSİNDE 
-TESLİM ALINMAYAN CİHAZLARDAN HUKUKİ VE MADDİ OLARAK 
-SORUMLULUK KABUL ETMEMEKTEDİR.<br><br>
-
-ÖN ÖDEME İLE İŞLEME ALINAN CİHAZLARDA, ONARIM İŞLEMİNDEN 
-VAZGEÇİLMESİ HALİNDE TAHSİL EDİLEN BEDELİN İADESİ YAPILMAZ.<br><br>
-
-ATÖLYEYE ALINAN CİHAZLARDA, ONARIM SÜRECİNİN MÜŞTERİ 
-TARAFINDAN İPTAL EDİLMESİ DURUMUNDA SERVİS ÜCRETİ VE 
-NAKLİYE BEDELİ AYRICA TALEP EDİLİR.
+Yapılan servis ve onarım işlemleri, teslim tarihinden itibaren bir (1) yıl süre ile garanti kapsamındadır.
+Ön ödeme ile işleme alınan cihazlarda, onarımdan vazgeçilmesi halinde ücret iadesi yapılmaz.
 </div>
-
 </div>
-
-<button onclick="pdfOlustur()">PDF OLUŞTUR</button>
 
 <script>
-const tarih = new Date().toLocaleDateString("tr-TR");
-const teknisyen = Math.floor(10000000 + Math.random() * 90000000);
-document.getElementById("servisno").innerText = "SRV-" + Date.now();
-document.getElementById("tarih").innerText = tarih;
-document.getElementById("teknisyen").innerText = teknisyen;
+/* BİLGİLER */
+document.getElementById("servisno").innerText="SRV-"+Date.now();
+document.getElementById("tarih").innerText=new Date().toLocaleDateString("tr-TR");
+document.getElementById("teknisyen").innerText=Math.floor(10000000+Math.random()*90000000);
 
-function islemOlustur(){
-  const islem = document.getElementById("islem").value;
-  const detay = document.getElementById("islemDetay").value;
-  const fiyat = document.getElementById("verilenFiyat").value;
-
+/* İŞLEM METNİ */
+function olusturIslem(){
   document.getElementById("islemCikti").innerHTML =
-    "<strong>"+islem+"</strong><br><br>"+
-    "<strong>Yapılan İşlemler:</strong><br>"+detay+"<br><br>"+
-    "<strong>Müşteriye Verilen Fiyat:</strong> "+
-    Number(fiyat).toLocaleString("tr-TR")+" TL";
-
-  document.getElementById("islemCikti").style.display="block";
+    "<strong>"+islem.value+"</strong><br>"+islemDetay.value+
+    "<br><strong>Fiyat:</strong> "+fiyat.value+" TL";
 }
 
-function paraEkle(){
-  const tutar = document.getElementById("tutar").value;
-  if(!tutar) return;
-  document.getElementById("paraTablo").innerHTML +=
-    "<tr>"+
-    "<td>"+tarih+"</td>"+
-    "<td>"+teknisyen+"</td>"+
-    "<td>"+document.getElementById("odemeSekli").value+"</td>"+
-    "<td>Tamamlandı</td>"+
-    "<td>"+Number(tutar).toLocaleString("tr-TR")+" TL</td>"+
-    "</tr>";
-  document.getElementById("tutar").value="";
+/* ÖDEME */
+function odemeEkle(){
+  odemeTablo.innerHTML +=
+    "<tr><td>"+tarih.innerText+"</td><td>"+odeme.value+"</td><td>"+tutar.value+" TL</td></tr>";
 }
 
+/* PDF */
 function pdfOlustur(){
-  document.querySelectorAll("button").forEach(b=>b.classList.add("hide-pdf"));
+  p_musteri.innerText=musteri.value;
+  p_adres.innerText=adres.value;
+  p_cihaz.innerText=cihaz.value;
+  p_islem.innerHTML=islemCikti.innerHTML;
+  p_odeme.innerHTML=odemeTablo.innerHTML;
+  p_imza.src=imza.toDataURL();
 
-  const ad = document.getElementById("musteri").value || "servis-formu";
+  form.style.display="none";
+  pdfForm.style.display="block";
+
   html2pdf().set({
     margin:8,
-    filename:ad+".pdf",
-    html2canvas:{scale:2,useCORS:true,scrollY:0},
-    jsPDF:{unit:"mm",format:"a4",orientation:"portrait"}
-  }).from(document.getElementById("form")).save().then(()=>{
-    document.querySelectorAll("button").forEach(b=>b.classList.remove("hide-pdf"));
+    filename:"servis-formu.pdf",
+    html2canvas:{scale:2},
+    jsPDF:{format:"a4"}
+  }).from(pdfForm).save().then(()=>{
+    form.style.display="block";
+    pdfForm.style.display="none";
   });
 }
 
-/* İMZA – iOS UYUMLU */
-const canvas = document.getElementById("imza");
-const ctx = canvas.getContext("2d");
-let drawing = false;
-
-function getPos(e){
-  const rect = canvas.getBoundingClientRect();
-  const touch = e.touches ? e.touches[0] : e;
-  return {
-    x: touch.clientX - rect.left,
-    y: touch.clientY - rect.top
-  };
-}
-
-function start(e){
-  drawing = true;
-  const p = getPos(e);
-  ctx.beginPath();
-  ctx.moveTo(p.x, p.y);
-}
-
-function draw(e){
-  if(!drawing) return;
-  e.preventDefault();
-  const p = getPos(e);
-  ctx.lineTo(p.x, p.y);
-  ctx.stroke();
-}
-
-function stop(){ drawing = false; }
-
-canvas.addEventListener("mousedown", start);
-canvas.addEventListener("mousemove", draw);
-canvas.addEventListener("mouseup", stop);
-canvas.addEventListener("touchstart", start);
-canvas.addEventListener("touchmove", draw);
-canvas.addEventListener("touchend", stop);
-
-function imzaTemizle(){
-  ctx.clearRect(0,0,canvas.width,canvas.height);
-}
+/* İMZA – iOS */
+const c=imza,ctx=c.getContext("2d");let d=false;
+function pos(e){const r=c.getBoundingClientRect(),t=e.touches?e.touches[0]:e;return{x:t.clientX-r.left,y:t.clientY-r.top}}
+c.addEventListener("mousedown",e=>{d=true;let p=pos(e);ctx.beginPath();ctx.moveTo(p.x,p.y)});
+c.addEventListener("mousemove",e=>{if(d){let p=pos(e);ctx.lineTo(p.x,p.y);ctx.stroke()}});
+c.addEventListener("mouseup",()=>d=false);
+c.addEventListener("touchstart",e=>{d=true;let p=pos(e);ctx.beginPath();ctx.moveTo(p.x,p.y)});
+c.addEventListener("touchmove",e=>{if(d){e.preventDefault();let p=pos(e);ctx.lineTo(p.x,p.y);ctx.stroke()}});
+c.addEventListener("touchend",()=>d=false);
+function temizleImza(){ctx.clearRect(0,0,c.width,c.height)}
 </script>
 
 </body>
