@@ -4,9 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Teknik Servis Formu</title>
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-
 <style>
 body{
   font-family:Arial, sans-serif;
@@ -25,12 +23,11 @@ body{
   padding-bottom:8px;
 }
 .header img{
-  height:55px;
-  margin-bottom:5px;
+  height:60px;
+  margin-bottom:6px;
 }
 .header h1{margin:0;font-size:18px}
 .header h2{margin:3px 0 0;font-size:13px}
-
 .info{
   display:flex;
   justify-content:space-between;
@@ -38,13 +35,11 @@ body{
   font-size:12px;
   margin:6px 0;
 }
-
 .section{
   border:1px solid #000;
   padding:8px;
   margin-top:8px;
 }
-
 label{
   font-weight:bold;
   font-size:12px;
@@ -57,14 +52,12 @@ input, textarea, select{
   font-size:12px;
   margin-top:3px;
 }
-
 button{
   width:100%;
   margin-top:8px;
   padding:10px;
   font-size:14px;
 }
-
 canvas{
   border:1px solid #000;
   width:100%;
@@ -72,39 +65,22 @@ canvas{
   height:120px;
   touch-action:none;
 }
-
 /* PDF ŞABLONU */
-#pdfForm{
-  display:none;
-  font-size:12px;
-}
+#pdfForm{display:none;font-size:12px;}
 .pdf-row{margin-bottom:5px}
 .pdf-label{font-weight:bold}
-.pdf-uyari{
-  font-size:10px;
-  line-height:1.3;
-  margin-top:8px;
-}
-table{
-  width:100%;
-  border-collapse:collapse;
-  font-size:11px;
-}
-th,td{
-  border:1px solid #000;
-  padding:4px;
-  text-align:center;
-}
+.pdf-uyari{font-size:10px;line-height:1.3;margin-top:8px;}
+table{width:100%;border-collapse:collapse;font-size:11px;}
+th,td{border:1px solid #000;padding:4px;text-align:center;}
 </style>
 </head>
-
 <body>
 
 <!-- ================== FORM (EKRAN) ================== -->
 <div id="form" class="form">
 
 <div class="header">
-  <img src="assets/logo.png">
+  <img src="assets/logo.png" alt="Logo">
   <h1>GEZİCİ BÖLGE MERKEZ SERVİS</h1>
   <h2>TEKNİK SERVİS FORMU</h2>
 </div>
@@ -118,10 +94,8 @@ th,td{
 <div class="section">
 <label>Müşteri Ad Soyad</label>
 <input id="musteri">
-
 <label>Adres</label>
 <textarea id="adres"></textarea>
-
 <label>Cihaz / Model</label>
 <input id="cihaz">
 </div>
@@ -133,15 +107,11 @@ th,td{
   <option>Atölyeye Alındı</option>
   <option>Parça Değişimi Yapıldı</option>
 </select>
-
 <label>Yapılan İşlemler</label>
 <textarea id="islemDetay"></textarea>
-
 <label>Müşteriye Verilen Fiyat (₺)</label>
 <input id="fiyat">
-
 <button type="button" onclick="olusturIslem()">İşlem Metni Oluştur</button>
-
 <div id="islemCikti" style="margin-top:8px;font-size:12px"></div>
 </div>
 
@@ -152,16 +122,11 @@ th,td{
   <option>EFT</option>
   <option>Kredi Kartı</option>
 </select>
-
 <label>Tutar</label>
 <input id="tutar">
-
 <button type="button" onclick="odemeEkle()">Ödeme Ekle</button>
-
 <table>
-<thead>
-<tr><th>Tarih</th><th>Ödeme</th><th>Tutar</th></tr>
-</thead>
+<thead><tr><th>Tarih</th><th>Ödeme</th><th>Tutar</th></tr></thead>
 <tbody id="odemeTablo"></tbody>
 </table>
 </div>
@@ -183,32 +148,24 @@ GEZİCİ BÖLGE MERKEZ SERVİS<br>
 TEKNİK SERVİS FORMU
 </h3>
 <hr>
-
 <div class="pdf-row"><span class="pdf-label">Müşteri:</span> <span id="p_musteri"></span></div>
 <div class="pdf-row"><span class="pdf-label">Adres:</span> <span id="p_adres"></span></div>
 <div class="pdf-row"><span class="pdf-label">Cihaz:</span> <span id="p_cihaz"></span></div>
-
 <br>
-
 <div class="pdf-label">Yapılan İşlem</div>
 <div id="p_islem"></div>
-
 <br>
-
 <table>
-<thead>
-<tr><th>Tarih</th><th>Ödeme</th><th>Tutar</th></tr>
-</thead>
+<thead><tr><th>Tarih</th><th>Ödeme</th><th>Tutar</th></tr></thead>
 <tbody id="p_odeme"></tbody>
 </table>
-
 <br>
-
 <img id="p_imza" style="width:200px;border:1px solid #000">
-
 <div class="pdf-uyari">
-Yapılan servis ve onarım işlemleri, teslim tarihinden itibaren bir (1) yıl süre ile garanti kapsamındadır.
-Ön ödeme ile işleme alınan cihazlarda, onarımdan vazgeçilmesi halinde ücret iadesi yapılmaz.
+• YAPILAN TÜM SERVİS VE ONARIM İŞLEMLERİ, TESLİM TARİHİNDEN İTİBAREN BİR (1) YIL SÜRE İLE GARANTİ KAPSAMINDADIR.<br>
+• FİRMAMIZ, SERVİSE TESLİM EDİLEN VE BİR (1) YIL İÇERİSİNDE TESLİM ALINMAYAN CİHAZLARDAN HUKUKİ VE MADDİ OLARAK SORUMLULUK KABUL ETMEMEKTEDİR.<br>
+• ÖN ÖDEME İLE İŞLEME ALINAN CİHAZLARDA, ONARIM İŞLEMİNDEN VAZGEÇİLMESİ HALİNDE TAHSİL EDİLEN BEDELİN İADESİ YAPILMAZ.<br>
+• ATÖLYEYE ALINAN CİHAZLARDA, ONARIM SÜRECİNİN MÜŞTERİ TARAFINDAN İPTAL EDİLMESİ DURUMUNDA SERVİS ÜCRETİ VE NAKLİYE BEDELİ AYRICA TALEP EDİLİR.
 </div>
 </div>
 
@@ -239,7 +196,6 @@ function pdfOlustur(){
   p_islem.innerHTML=islemCikti.innerHTML;
   p_odeme.innerHTML=odemeTablo.innerHTML;
   p_imza.src=imza.toDataURL();
-
   form.style.display="none";
   pdfForm.style.display="block";
 
