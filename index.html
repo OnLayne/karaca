@@ -3,262 +3,68 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Teknik Servis Formu</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-<style>
-body{
-  font-family: Arial, sans-serif;
-  background: #f2f2f2;
-  padding: 10px;
-}
-.form{
-  background:#fff;
-  max-width:850px;
-  margin:auto;
-  padding:15px;
-}
-.header{
-  text-align:center;
-  border-bottom:2px solid #000;
-  padding-bottom:8px;
-}
-.header img{
-  height:60px;
-  margin-bottom:6px;
-}
-.header h1{margin:0;font-size:18px}
-.header h2{margin:3px 0 0;font-size:13px}
-.info{
-  display:flex;
-  justify-content:space-between;
-  flex-wrap:wrap;
-  font-size:12px;
-  margin:6px 0;
-}
-.section{
-  border:1px solid #000;
-  padding:8px;
-  margin-top:8px;
-}
-label{
-  font-weight:bold;
-  font-size:12px;
-  margin-top:6px;
-  display:block;
-}
-input, textarea, select{
-  width:100%;
-  padding:6px;
-  font-size:12px;
-  margin-top:3px;
-}
-button{
-  width:100%;
-  margin-top:8px;
-  padding:10px;
-  font-size:14px;
-}
-canvas{
-  border:1px solid #000;
-  width:100%;
-  max-width:300px;
-  height:120px;
-  touch-action:none;
-}
-/* PDF stili */
-#pdfForm{
-  display:none;
-  font-size:12px;
-  background:#fff;
-  padding:10px;
-}
-.pdf-section{
-  border:1px solid #000;
-  padding:6px;
-  margin-bottom:8px;
-}
-.pdf-row{margin-bottom:5px}
-.pdf-label{font-weight:bold}
-.pdf-uyari{
-  font-size:10px;
-  line-height:1.3;
-  margin-top:8px;
-}
-table{
-  width:100%;
-  border-collapse:collapse;
-  font-size:11px;
-}
-th,td{
-  border:1px solid #000;
-  padding:4px;
-  text-align:center;
-}
-</style>
+<title>CANTECH Servis Formu</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<div id="form" class="form">
-<div class="header">
-  <img src="assets/logo.png" alt="Logo">
-  <h1>GEZİCİ BÖLGE MERKEZ SERVİS</h1>
-  <h2>TEKNİK SERVİS FORMU</h2>
+<div class="fill-form">
+  <h3>Teknisyen Formu Doldur</h3>
+
+  <label>Ad Soyad (Müşteri): <input type="text" id="inputCustomerName"></label>
+  <label>Telefon: <input type="text" id="inputCustomerPhone"></label>
+  <label>Adres: <input type="text" id="inputCustomerAddress"></label>
+  <label>Operatör Notu: <input type="text" id="inputOperatorNote"></label>
+
+  <label>Cihaz Türü:
+    <select id="inputDeviceType" onchange="updateDeviceBrands()">
+      <option value="">Seçiniz</option>
+      <option>Kombi</option>
+      <option>Klima</option>
+      <option>Televizyon</option>
+      <option>Buzdolabı</option>
+      <option>Çamaşır Makinesi</option>
+      <option>Bulaşık Makinesi</option>
+    </select>
+  </label>
+  <label>Cihaz Markası:
+    <select id="inputDeviceBrand"><option>Önce Tür Seçiniz</option></select>
+  </label>
+
+  <label>Cihaz Modeli: <input type="text" id="inputDeviceModel"></label>
+  <label>Cihaz Seri No: <input type="text" id="inputDeviceSerial"></label>
+  <label>Cihaz Arızası: <input type="text" id="inputDeviceIssue"></label>
+
+  <label>Yapılacak İşlem:
+    <select id="inputTaskAction">
+      <option>Seçiniz</option>
+      <option>Atölyeye Alındı</option>
+      <option>Yerinde Bakım Yapıldı</option>
+      <option>Atölyeye Aldır (Nakliye Gönder)</option>
+      <option>Fiyatta Anlaşılamadı</option>
+      <option>Ürün Garantili Çıktı</option>
+      <option>Müşteriye Ulaşılamadı</option>
+      <option>Müşteri İptal Etti</option>
+      <option>Parçası Atölyeye Alındı</option>
+      <option>Haber Verecek</option>
+      <option>Farklı Teknisyen</option>
+      <option>Yönlendirildi</option>
+      <option>Nakliyede</option>
+      <option>Servis Sonlandırıldı</option>
+    </select>
+  </label>
+
+  <label>Yapılan İşlemler:
+    <textarea id="inputTaskDesc" placeholder="Örn: Üçyol step motoru 1200384 kodlu değiştirildi..."></textarea>
+  </label>
+
+  <label>Müşteriye Verilen Fiyat (TL):
+    <input type="number" id="inputTaskPrice" value="0">
+  </label>
+
+  <button onclick="fillFromInputs()">Formu Bitir ve Yazdır</button>
 </div>
 
-<div class="info">
-  <div>Servis No: <span id="servisno"></span></div>
-  <div>Tarih: <span id="tarih"></span></div>
-  <div>Teknisyen Kodu: <strong id="teknisyen"></strong></div>
-</div>
-
-<div class="section">
-<label>Müşteri Ad Soyad</label>
-<input id="musteri">
-<label>Adres</label>
-<textarea id="adres"></textarea>
-<label>Cihaz / Model</label>
-<input id="cihaz">
-</div>
-
-<div class="section">
-<label>Yapılan İşlem</label>
-<select id="islem">
-  <option>Yerinde Bakım Yapıldı</option>
-  <option>Atölyeye Alındı</option>
-  <option>Parça Değişimi Yapıldı</option>
-</select>
-<label>Yapılan İşlemler</label>
-<textarea id="islemDetay"></textarea>
-<label>Müşteriye Verilen Fiyat (₺)</label>
-<input id="fiyat">
-<button type="button" onclick="olusturIslem()">İşlem Metni Oluştur</button>
-<div id="islemCikti" style="margin-top:8px;font-size:12px"></div>
-</div>
-
-<div class="section">
-<label>Ödeme Şekli</label>
-<select id="odeme">
-  <option>Nakit</option>
-  <option>EFT</option>
-  <option>Kredi Kartı</option>
-</select>
-<label>Tutar</label>
-<input id="tutar">
-<button type="button" onclick="odemeEkle()">Ödeme Ekle</button>
-<table>
-<thead><tr><th>Tarih</th><th>Ödeme</th><th>Tutar</th></tr></thead>
-<tbody id="odemeTablo"></tbody>
-</table>
-</div>
-
-<div class="section">
-<label>Müşteri İmzası</label>
-<canvas id="imza"></canvas>
-<button type="button" onclick="temizleImza()">İmzayı Temizle</button>
-</div>
-
-</div>
-
-<button onclick="pdfOlustur()">PDF YAZDIR</button>
-
-<!-- PDF Şablonu -->
-<div id="pdfForm">
-<div class="header">
-  <img src="assets/logo.png" alt="Logo">
-  <h1>GEZİCİ BÖLGE MERKEZ SERVİS</h1>
-  <h2>TEKNİK SERVİS FORMU</h2>
-</div>
-
-<div class="pdf-section">
-<div class="pdf-row"><span class="pdf-label">Servis No:</span> <span id="p_servisno"></span></div>
-<div class="pdf-row"><span class="pdf-label">Tarih:</span> <span id="p_tarih"></span></div>
-<div class="pdf-row"><span class="pdf-label">Teknisyen Kodu:</span> <span id="p_teknisyen"></span></div>
-</div>
-
-<div class="pdf-section">
-<div class="pdf-row"><span class="pdf-label">Müşteri:</span> <span id="p_musteri"></span></div>
-<div class="pdf-row"><span class="pdf-label">Adres:</span> <span id="p_adres"></span></div>
-<div class="pdf-row"><span class="pdf-label">Cihaz:</span> <span id="p_cihaz"></span></div>
-</div>
-
-<div class="pdf-section">
-<div class="pdf-row pdf-label">Yapılan İşlem</div>
-<div id="p_islem"></div>
-<div class="pdf-row"><span class="pdf-label">Müşteriye Verilen Fiyat:</span> <span id="p_fiyat"></span></div>
-</div>
-
-<div class="pdf-section">
-<table>
-<thead><tr><th>Tarih</th><th>Ödeme</th><th>Tutar</th></tr></thead>
-<tbody id="p_odeme"></tbody>
-</table>
-</div>
-
-<div class="pdf-section">
-<img id="p_imza" style="width:200px;border:1px solid #000">
-</div>
-
-<div class="pdf-section pdf-uyari">
-• YAPILAN TÜM SERVİS VE ONARIM İŞLEMLERİ, TESLİM TARİHİNDEN İTİBAREN BİR (1) YIL SÜRE İLE GARANTİ KAPSAMINDADIR.<br>
-• FİRMAMIZ, SERVİSE TESLİM EDİLEN VE BİR (1) YIL İÇERİSİNDE TESLİM ALINMAYAN CİHAZLARDAN HUKUKİ VE MADDİ OLARAK SORUMLULUK KABUL ETMEMEKTEDİR.<br>
-• ÖN ÖDEME İLE İŞLEME ALINAN CİHAZLARDA, ONARIM İŞLEMİNDEN VAZGEÇİLMESİ HALİNDE TAHSİL EDİLEN BEDELİN İADESİ YAPILMAZ.<br>
-• ATÖLYEYE ALINAN CİHAZLARDA, ONARIM SÜRECİNİN MÜŞTERİ TARAFINDAN İPTAL EDİLMESİ DURUMUNDA SERVİS ÜCRETİ VE NAKLİYE BEDELİ AYRICA TALEP EDİLİR.
-</div>
-</div>
-
-<script>
-document.getElementById("servisno").innerText="SRV-"+Date.now();
-document.getElementById("tarih").innerText=new Date().toLocaleDateString("tr-TR");
-document.getElementById("teknisyen").innerText=Math.floor(10000000+Math.random()*90000000);
-
-function olusturIslem(){
-  document.getElementById("islemCikti").innerHTML =
-    "<strong>"+islem.value+"</strong><br>"+islemDetay.value+
-    "<br><strong>Fiyat:</strong> "+fiyat.value+" TL";
-}
-
-function odemeEkle(){
-  odemeTablo.innerHTML +=
-    "<tr><td>"+tarih.innerText+"</td><td>"+odeme.value+"</td><td>"+tutar.value+" TL</td></tr>";
-}
-
-function pdfOlustur(){
-  p_servisno.innerText = servisno.innerText;
-  p_tarih.innerText = tarih.innerText;
-  p_teknisyen.innerText = teknisyen.innerText;
-  p_musteri.innerText = musteri.value;
-  p_adres.innerText = adres.value;
-  p_cihaz.innerText = cihaz.value;
-  p_islem.innerHTML = islemCikti.innerHTML;
-  p_fiyat.innerText = fiyat.value + " TL";
-  p_odeme.innerHTML = odemeTablo.innerHTML;
-  p_imza.src = imza.toDataURL();
-
-  form.style.display="none";
-  pdfForm.style.display="block";
-
-  html2pdf().set({
-    margin:8,
-    filename:"servis-formu.pdf",
-    html2canvas:{scale:2},
-    jsPDF:{format:"a4"}
-  }).from(pdfForm).save().then(()=>{
-    form.style.display="block";
-    pdfForm.style.display="none";
-  });
-}
-
-// İmza iOS / dokunmatik uyumlu
-const c=imza,ctx=c.getContext("2d");let d=false;
-function pos(e){const r=c.getBoundingClientRect(),t=e.touches?e.touches[0]:e;return{x:t.clientX-r.left,y:t.clientY-r.top}}
-c.addEventListener("mousedown",e=>{d=true;let p=pos(e);ctx.beginPath();ctx.moveTo(p.x,p.y)});
-c.addEventListener("mousemove",e=>{if(d){let p=pos(e);ctx.lineTo(p.x,p.y);ctx.stroke()}});
-c.addEventListener("mouseup",()=>d=false);
-c.addEventListener("touchstart",e=>{d=true;let p=pos(e);ctx.beginPath();ctx.moveTo(p.x,p.y)});
-c.addEventListener("touchmove",e=>{if(d){e.preventDefault();let p=pos(e);ctx.lineTo(p.x,p.y);ctx.stroke()}});
-c.addEventListener("touchend",()=>d=false);
-function temizleImza(){ctx.clearRect(0,0,c.width,c.height)}
-</script>
-
+<script src="script.js"></script>
 </body>
 </html>
