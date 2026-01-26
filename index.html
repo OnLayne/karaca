@@ -3,66 +3,127 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CANTECH Servis Formu</title>
+<title>CANTECH Teknik Servis Formu</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<div class="fill-form">
-  <h3>Teknisyen Formu Doldur</h3>
+<div class="form-container">
 
-  <label>Ad Soyad (Müşteri): <input type="text" id="inputCustomerName"></label>
-  <label>Telefon: <input type="text" id="inputCustomerPhone"></label>
-  <label>Adres: <input type="text" id="inputCustomerAddress"></label>
-  <label>Operatör Notu: <input type="text" id="inputOperatorNote"></label>
+  <!-- LOGO -->
+  <div class="logo-header">
+    <img src="https://i.hizliresim.com/er44tny.jpeg" alt="CANTECH Teknik Servis" class="company-logo">
+  </div>
 
-  <label>Cihaz Türü:
-    <select id="inputDeviceType" onchange="updateDeviceBrands()">
-      <option value="">Seçiniz</option>
-      <option>Kombi</option>
-      <option>Klima</option>
-      <option>Televizyon</option>
-      <option>Buzdolabı</option>
-      <option>Çamaşır Makinesi</option>
-      <option>Bulaşık Makinesi</option>
-    </select>
-  </label>
-  <label>Cihaz Markası:
-    <select id="inputDeviceBrand"><option>Önce Tür Seçiniz</option></select>
-  </label>
+  <h1 class="center main-title">BÖLGE MERKEZ TEKNİK SERVİS</h1>
+  <h2 class="center subtitle">- TEKNİK SERVİS FORMU -</h2>
 
-  <label>Cihaz Modeli: <input type="text" id="inputDeviceModel"></label>
-  <label>Cihaz Seri No: <input type="text" id="inputDeviceSerial"></label>
-  <label>Cihaz Arızası: <input type="text" id="inputDeviceIssue"></label>
+  <div class="top-info">
+    <div>Servis No: <span id="serviceNo"></span></div>
+    <div>Servis Yetki No: <span id="serviceAuthNo"></span></div>
+  </div>
 
-  <label>Yapılacak İşlem:
-    <select id="inputTaskAction">
-      <option>Seçiniz</option>
-      <option>Atölyeye Alındı</option>
+  <div class="info-tables">
+    <table>
+      <caption>MÜŞTERİ BİLGİLERİ</caption>
+      <tr><td>Ad Soyad</td><td><input id="customerName"></td></tr>
+      <tr><td>Telefon</td><td><input id="customerPhone"></td></tr>
+      <tr><td>Adres</td><td><input id="customerAddress"></td></tr>
+      <tr><td>Operatör Notu</td><td><input id="operatorNote"></td></tr>
+    </table>
+
+    <table>
+      <caption>CİHAZ BİLGİLERİ</caption>
+      <tr><td>Marka</td><td><input></td></tr>
+      <tr><td>Tür</td><td><input></td></tr>
+      <tr><td>Model</td><td><input></td></tr>
+      <tr><td>Seri No</td><td><input></td></tr>
+      <tr><td>Arıza</td><td><input></td></tr>
+    </table>
+  </div>
+
+  <div class="service-status">
+    SERVİS DURUMU:
+    <select id="serviceStatus">
       <option>Yerinde Bakım Yapıldı</option>
-      <option>Atölyeye Aldır (Nakliye Gönder)</option>
-      <option>Fiyatta Anlaşılamadı</option>
-      <option>Ürün Garantili Çıktı</option>
-      <option>Müşteriye Ulaşılamadı</option>
-      <option>Müşteri İptal Etti</option>
-      <option>Parçası Atölyeye Alındı</option>
-      <option>Haber Verecek</option>
-      <option>Farklı Teknisyen</option>
-      <option>Yönlendirildi</option>
-      <option>Nakliyede</option>
+      <option>Atölyeye Alındı</option>
       <option>Servis Sonlandırıldı</option>
     </select>
-  </label>
+  </div>
 
-  <label>Yapılan İşlemler:
-    <textarea id="inputTaskDesc" placeholder="Örn: Üçyol step motoru 1200384 kodlu değiştirildi..."></textarea>
-  </label>
+  <!-- SERVİSTE YAPILAN İŞLEMLER -->
+  <h3>Serviste Yapılan İşlemler</h3>
+  <table class="full-table service-table">
+    <thead>
+      <tr>
+        <th style="width:15%">TARİH</th>
+        <th style="width:20%">İŞLEM</th>
+        <th style="width:45%">AÇIKLAMA</th>
+        <th style="width:20%">FİYAT</th>
+      </tr>
+    </thead>
+    <tbody id="taskTableBody">
+      <tr>
+        <td><input type="date"></td>
+        <td><input></td>
+        <td><textarea class="long-text"></textarea></td>
+        <td><input></td>
+      </tr>
+    </tbody>
+  </table>
+  <button onclick="addTaskRow()">Yeni İşlem Ekle</button>
 
-  <label>Müşteriye Verilen Fiyat (TL):
-    <input type="number" id="inputTaskPrice" value="0">
-  </label>
+  <!-- PARA -->
+  <h3>Para Hareketleri</h3>
+  <table class="full-table">
+    <thead>
+      <tr>
+        <th>TARİH</th>
+        <th>TAHSİL EDEN</th>
+        <th>ÖDEME</th>
+        <th>DURUM</th>
+        <th>TUTAR</th>
+      </tr>
+    </thead>
+    <tbody id="paymentTableBody">
+      <tr>
+        <td><input type="date"></td>
+        <td><input></td>
+        <td><input></td>
+        <td><input></td>
+        <td><input></td>
+      </tr>
+    </tbody>
+  </table>
+  <button onclick="addPaymentRow()">Yeni Ödeme Ekle</button>
 
-  <button onclick="fillFromInputs()">Formu Bitir ve Yazdır</button>
+  <!-- İMZALAR -->
+  <div class="signatures">
+    <div>
+      <p>Tüketici İmza</p>
+      <canvas id="customerSign" class="signature-box"></canvas>
+      <button onclick="clearSign('customerSign')">Temizle</button>
+    </div>
+    <div>
+      <p>Teknisyen İmza</p>
+      <canvas id="techSign" class="signature-box"></canvas>
+      <button onclick="clearSign('techSign')">Temizle</button>
+    </div>
+  </div>
+
+  <!-- NOTLAR -->
+  <table class="notes-table">
+    <caption>- NOTLAR -</caption>
+    <tr><td>YAPILAN TÜM SERVİS VE ONARIM İŞLEMLERİ TESLİM TARİHİNDEN İTİBAREN 1 YIL GARANTİ KAPSAMINDADIR.</td></tr>
+    <tr><td>1 YIL İÇERİSİNDE TESLİM ALINMAYAN CİHAZLARDAN FİRMAMIZ SORUMLU DEĞİLDİR.</td></tr>
+    <tr><td>ÖN ÖDEME İLE ALINAN CİHAZLARDA ÜCRET İADESİ YAPILMAZ.</td></tr>
+    <tr><td>ATÖLYEYE ALINAN CİHAZLARDA İPTAL HALİNDE SERVİS VE NAKLİYE BEDELİ TALEP EDİLİR.</td></tr>
+  </table>
+
+</div>
+
+<div class="print-button">
+  <button onclick="window.print()">Formu Yazdır (A4)</button>
 </div>
 
 <script src="script.js"></script>
